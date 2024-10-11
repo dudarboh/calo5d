@@ -1,0 +1,105 @@
+<marlin>
+    <constants>
+    </constants>
+
+    <execute>
+        <processor name="InitDD4hep" />
+        <processor name="MergeTrackerHits"/>
+        <processor name="MergeClusterHits"/>
+        <processor name="MergeTrackerHitsRelations"/>
+        <processor name="MergeClusterHitsRelations"/>
+        <processor name="Calo5D"/>
+    </execute>
+
+    <global>
+        <parameter name="LCIOInputFiles" type="StringVec">
+            /home/foxwise/Downloads/rv02-02.sv02-02.mILD_l5_o1_v02.E250-SetA.I500010.P2f_z_h.eL.pR.n000_001.d_rec_00015161_328.slcio
+        </parameter>
+        <parameter name="MaxRecordNumber" type="int">0</parameter>
+        <parameter name="SkipNEvents" type="int">0</parameter>
+        <parameter name="SupressCheck" type="bool">false</parameter>
+        <parameter name="AllowToModifyEvent" type="bool">false</parameter>
+        <parameter name="RandomSeed" type="int">1234567890</parameter>
+        <parameter name="Verbosity" options="DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT" type="string">DEBUG0</parameter>
+    </global>
+
+    <processor name="InitDD4hep" type="InitializeDD4hep">
+        <parameter name="DD4hepXMLFile" type="string">
+            /cvmfs/sw-nightlies.hsf.org/key4hep/releases/2024-10-04/x86_64-almalinux9-gcc14.2.0-opt/k4geo/2a8573aead54464496f736040252fcbcdfddcbbc_develop-bgi3te/share/k4geo/ILD/compact/ILD_sl5_v02/ILD_l5_o1_v02.xml
+        </parameter>
+    </processor>
+
+    <processor name="Calo5D" type="Calo5D">
+    </processor>
+
+    <processor name="MergeTrackerHits" type="MergeCollections">
+        <parameter name="InputCollections" type="StringVec">
+            VXDTrackerHits
+            TPCTrackerHits
+            SITTrackerHits
+            SETTrackerHits
+            FTDPixelTrackerHits
+            FTDStripTrackerHits
+        </parameter>
+
+        <parameter name="OutputCollection" type="string"> TrackerHitCollection </parameter>
+    </processor>
+
+    <processor name="MergeClusterHits" type="MergeCollections">
+        <parameter name="InputCollections" type="StringVec"> 
+            EcalBarrelCollectionRec
+            EcalEndcapRingCollectionRec
+            EcalEndcapsCollectionRec
+            HcalBarrelsCollectionRec
+            HcalEndcapRingCollectionRec
+            HcalEndcapsCollectionRec
+            BCAL
+            LHCAL
+            LCAL
+            MUON
+        </parameter>
+        <parameter name="OutputCollection" type="string"> CalorimeterHitCollection </parameter>
+    </processor>
+
+
+    <processor name="MergeTrackerHitsRelations" type="MergeCollections">
+        <parameter name="InputCollections" type="StringVec">
+            VXDTrackerHitRelations
+            TPCTrackerHitRelations
+            SITTrackerHitRelations
+            SETTrackerHitRelations
+            FTDPixelTrackerHitRelations
+            FTDStripTrackerHitRelations
+        </parameter>
+
+        <parameter name="OutputCollection" type="string"> TrackerHitsRelations </parameter>
+    </processor>
+
+    <processor name="MergeClusterHitsRelations" type="MergeCollections">
+        <parameter name="InputCollections" type="StringVec"> 
+            EcalBarrelRelationsSimRec
+            EcalEndcapRingRelationsSimRec
+            EcalEndcapsRelationsSimRec
+            HcalBarrelRelationsSimRec
+            HcalEndcapRingRelationsSimRec
+            HcalEndcapsRelationsSimRec
+            RelationBCalHit
+            RelationLHcalHit
+            RelationLcalHit
+            RelationMuonHit
+        </parameter>
+        <parameter name="OutputCollection" type="string"> CalorimeterHitsRelations </parameter>
+    </processor>
+
+    <processor name="Correct_dEdx" type="AngularCorrection_dEdxProcessor">
+        <!--parameter for new angular correction dedx= uncorrected_dedx  / f, with f= pol3(lambda)-->
+        <!-- Parameters for 2020 DST (and all generated with v02-02 and v02-02-01 -->
+        <parameter name="AngularCorrectionParameters" type="FloatVec"> 0.970205 0.0007506 4.41781e-8 5.8222e-8 </parameter>
+        <!--LDC track collection name-->
+        <parameter name="LDCTrackCollection" type="string" lcioInType="Track">MarlinTrkTracks </parameter>
+        <!--parameters used in the outdated angular correction outdated_dedx= uncorrected_dedx / f, with f = 1. / ( 1.0+[1]*cos(theta)*cos(theta)/[0] )-->
+    </processor>
+
+
+
+</marlin>
