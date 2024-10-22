@@ -72,7 +72,7 @@
             FTDStripTrackerHitRelations
         </parameter>
 
-        <parameter name="OutputCollection" type="string"> TrackerHitsRelations </parameter>
+        <parameter name="OutputCollection" type="string"> TrackerHitRelations </parameter>
     </processor>
 
     <processor name="MergeClusterHitsRelations" type="MergeCollections">
@@ -88,7 +88,7 @@
             RelationLcalHit
             RelationMuonHit
         </parameter>
-        <parameter name="OutputCollection" type="string"> CalorimeterHitsRelations </parameter>
+        <parameter name="OutputCollection" type="string"> CalorimeterHitRelations </parameter>
     </processor>
 
     <processor name="Correct_dEdx" type="AngularCorrection_dEdxProcessor">
